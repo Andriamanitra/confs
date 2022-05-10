@@ -1,0 +1,59 @@
+[summary] # a header like this starts a new section like in .INI
+
+what = "simpler, stupider configuration file format"
+
+value_types =
+- "integer" # always 64-bit signed!
+- "string"
+- "enum"
+
+collection_types =
+- "list" # only!
+
+file_extension = ".confs"
+
+# enums get parsed into integers [0, 1, 2, 3, ...]
+@ONE_OF Crystal Python Dlang
+implemented_in = Python
+
+
+[reasoning]
+
+why =
+- "I want SIMPLE human-readable and editable configs"
+- "YAML sucks"
+- "it's annoying to write delimiters on both sides of things (think []{} in JSON)"
+- "writing commas is a waste of time"
+- "did I mention YAML sucks?"
+
+antifeatures =
+- "no complicated nesting"
+- "only characters a-z, underscores, and numbers 0-9 allowed in identifiers"
+- "strings must always be quoted"
+- "all numbers are interpreted as 64-bit signed integers, anything outside 64-bit integer range MUST produce an error"
+- "no special type for booleans, only enums (with @ONE_OF descriptor)"
+- "strings do NOT support any escape sequences"
+
+
+[so.very.awesome.examples] # ok so I lied about no nesting, this actually gets nested (but nesting=bad, avoid!)
+
+@ONE_OF False True
+simple = True
+
+@ONE_OF Yes No Maybe Definitely
+better_than_yaml = Definitely
+
+description =
+"
+This is a multiline string!
+It starts with a " on its own line and ends with a " on its own line.
+"
+
+favorite_numbers =
+- -1
+- 7
+- 13
+- 1337
+
+# I don't particularly like this but it's the best thing I've come up with so far:
+empty_list = []

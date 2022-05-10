@@ -1,0 +1,33 @@
+confs: (section)*
+
+section: header (assignment)*
+
+header: "[" IDENTIFIER ("." IDENTIFIER)* "]"
+
+assignment: IDENTIFIER "=" value
+          | IDENTIFIER "=" list
+          | "@ONE_OF" options IDENTIFIER "=" ENUM_IDENTIFIER -> checked_assignment
+
+list: "[]" -> empty
+    | ("-" value)+
+
+value: MULTILINE_STRING -> multiline_string
+     | SIGNED_INT -> number
+     | STRING -> string
+
+options: ENUM_IDENTIFIER (" " ENUM_IDENTIFIER)*
+
+IDENTIFIER: /[a-z_]+/
+
+ENUM_IDENTIFIER: /[A-Z][A-Za-z_]+/
+
+STRING: /"[^"\n]*"/
+MULTILINE_STRING: /"\n(.*?)\n"/sm NEWLINE
+
+COMMENT: "#" /[^\n]/*
+
+%import common.SIGNED_INT
+%import common.WS
+%import common.NEWLINE
+%ignore WS
+%ignore COMMENT
